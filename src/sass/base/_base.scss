@@ -1,0 +1,19 @@
+*,
+*::after,
+*::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+
+body {
+    box-sizing: border-box;
+    background: linear-gradient(180deg, var(--main-color) 0%, var(--secondary-color) 100%);
+    // min-width: 100vw;
+    min-height: 100vh;
+}
