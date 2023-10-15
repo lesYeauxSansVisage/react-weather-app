@@ -35,18 +35,20 @@ export const mockApiData: ApiDataType = {
 
 type WeatherContextTypes = {
   getForecast: (city: string) => void;
-  foreCastData: ApiDataType;
+  resetForecast: () => void;
+  foreCastData: ApiDataType | null;
 };
 
 export const WeatherContext = React.createContext<WeatherContextTypes>({
   getForecast: () => {},
+  resetForecast: () => {},
   foreCastData: {} as ApiDataType,
 });
 
 export const WeatherContextProvider = (props: Props) => {
   const [foreCastData, setForeCastData] = useState<ApiDataType | null>(null);
 
-  const getForeCast = async (city: string) => {
+  const getForecast = async (city: string) => {
     const data = await fetch(
       `https://api.weatherapi.com/v1/forecast.json?key=7b23400cf7984c81947145338230510&q=${city}&days=6&lang=pt&hours=23`
     );
@@ -56,11 +58,16 @@ export const WeatherContextProvider = (props: Props) => {
     setForeCastData(res);
   };
 
+  const resetForecast = () => {
+    setForeCastData(null);
+  };
+
   return (
     <WeatherContext.Provider
       value={{
-        getForecast: getForeCast,
-        foreCastData: foreCastData,
+        getForecast,
+        foreCastData,
+        resetForecast,
       }}
     >
       {props.children}
