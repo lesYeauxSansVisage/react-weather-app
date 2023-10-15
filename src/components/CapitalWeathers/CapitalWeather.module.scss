@@ -1,0 +1,27 @@
+@import '../../sass/abstracts/mixins';
+
+.capital-weather {
+    display: flex;
+    gap: 2rem;
+    font-size: 1.5rem;
+    font-weight: 300;
+    width: 45%;
+
+    @include respond(phone) {
+        width: 100%;
+
+        &:nth-of-type(2) {
+            display: none;
+            visibility: hidden;
+        }
+    }
+
+    &>* {
+        padding: 1rem;
+        padding-left: 0;
+    }
+}
+
+.bold {
+    font-weight: 700;
+}
