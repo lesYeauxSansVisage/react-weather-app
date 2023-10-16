@@ -16,16 +16,18 @@ type ApiDataType = {
   };
 
   forecast: {
-    forecastday: [
-      {
-        date: string;
-        day: {
-          maxtemp_c: number;
-          mintemp_c: number;
-        };
-      }
-    ];
+    forecastday: ForecastDayType[];
   };
 };
 
-export default ApiDataType;
+type ForecastDayType = {
+  date: string;
+  day: {
+    maxtemp_c: number;
+    mintemp_c: number;
+  };
+};
+
+export type { ApiDataType };
+
+export type { ForecastDayType };
