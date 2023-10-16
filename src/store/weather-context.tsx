@@ -49,13 +49,21 @@ export const WeatherContextProvider = (props: Props) => {
   const [foreCastData, setForeCastData] = useState<ApiDataType | null>(null);
 
   const getForecast = async (city: string) => {
-    const data = await fetch(
-      `https://api.weatherapi.com/v1/forecast.json?key=7b23400cf7984c81947145338230510&q=${city}&days=6&lang=pt&hours=23`
-    );
+    try {
+      const data = await fetch(
+        `https://api.weatherapi.com/v1/forecast.json?key=7b23400cf7984c81947145338230510&q=${city}&days=6&lang=pt&hours=23`
+      );
 
-    const res = await data.json();
+      const res = await data.json();
 
-    setForeCastData(res);
+      if (res.ok) {
+        setForeCastData(res);
+      } else {
+        throw new Error("Something has going wrong!");
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const resetForecast = () => {
