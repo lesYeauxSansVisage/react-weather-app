@@ -1,66 +1,43 @@
 import React, { useState } from "react";
-import ApiDataType from "../types/ApiDataType";
+import { ApiDataType } from "../types/ApiDataType";
 
 type Props = React.PropsWithChildren;
-
-export const mockApiData: ApiDataType = {
-  location: {
-    name: "Niteroi",
-    region: "Rio de Janeiro",
-    country: "Brazil",
-  },
-  current: {
-    temp_c: 26.0,
-
-    condition: {
-      text: "Encoberto",
-      icon: "//cdn.weatherapi.com/weather/64x64/day/122.png",
-    },
-    wind_kph: 15.1,
-    humidity: 70,
-    feelslike_c: 29.7,
-  },
-  forecast: {
-    forecastday: [
-      {
-        date: "2023-10-10",
-        day: {
-          maxtemp_c: 25,
-          mintemp_c: 19,
-        },
-      },
-    ],
-  },
-};
 
 type WeatherContextTypes = {
   getForecast: (city: string) => void;
   resetForecast: () => void;
   foreCastData: ApiDataType | null;
+  isLoading: boolean;
 };
 
 export const WeatherContext = React.createContext<WeatherContextTypes>({
   getForecast: () => {},
   resetForecast: () => {},
   foreCastData: {} as ApiDataType,
+  isLoading: false,
 });
 
 export const WeatherContextProvider = (props: Props) => {
   const [foreCastData, setForeCastData] = useState<ApiDataType | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const getForecast = async (city: string) => {
+    setIsLoading(true);
     try {
       const data = await fetch(
         `https://api.weatherapi.com/v1/forecast.json?key=7b23400cf7984c81947145338230510&q=${city}&days=6&lang=pt&hours=23`
       );
 
-      const res = await data.json();
+      if (data.ok) {
+        const res = await data.json();
+        console.log(res);
 
-      if (res.ok) {
         setForeCastData(res);
       } else {
         throw new Error("Something has going wrong!");
       }
+
+      setIsLoading(false);
     } catch (e) {
       console.log(e);
     }
@@ -76,6 +53,7 @@ export const WeatherContextProvider = (props: Props) => {
         getForecast,
         foreCastData,
         resetForecast,
+        isLoading,
       }}
     >
       {props.children}
