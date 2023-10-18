@@ -7,37 +7,47 @@ type WeatherContextTypes = {
   getForecast: (city: string) => void;
   resetForecast: () => void;
   foreCastData: ApiDataType | null;
-  isLoading: boolean;
+  isForecastLoading: boolean;
+  getCapitalWeather: () => void;
+  capitalForecastData: ApiDataType[] | null;
+  isCapitalForecastDataLoading: boolean;
 };
 
 export const WeatherContext = React.createContext<WeatherContextTypes>({
-  getForecast: () => {},
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  getForecast: async (_city: string) => {},
   resetForecast: () => {},
   foreCastData: {} as ApiDataType,
-  isLoading: false,
+  isForecastLoading: false,
+  getCapitalWeather: async () => {},
+  capitalForecastData: [],
+  isCapitalForecastDataLoading: false,
 });
 
 export const WeatherContextProvider = (props: Props) => {
   const [foreCastData, setForeCastData] = useState<ApiDataType | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [capitalForecastData, setCapitalForeCastData] = useState<
+    ApiDataType[] | null
+  >(null);
+  const [isForecastLoading, setIsForecastLoading] = useState(false);
+  const [isCapitalForecastDataLoading, setIsCapitalForecastDataLoading] =
+    useState(false);
 
-  const getForecast = async (city: string) => {
-    setIsLoading(true);
+  const getForecast = async (city: string, days: number = 6) => {
+    setIsForecastLoading(true);
     try {
       const data = await fetch(
-        `https://api.weatherapi.com/v1/forecast.json?key=7b23400cf7984c81947145338230510&q=${city}&days=6&lang=pt&hours=23`
+        `https://api.weatherapi.com/v1/forecast.json?key=7b23400cf7984c81947145338230510&q=${city}&days=${days}&lang=pt&hours=23`
       );
 
       if (data.ok) {
         const res = await data.json();
-        console.log(res);
-
         setForeCastData(res);
       } else {
         throw new Error("Something has going wrong!");
       }
 
-      setIsLoading(false);
+      setIsForecastLoading(false);
     } catch (e) {
       console.log(e);
     }
@@ -47,13 +57,52 @@ export const WeatherContextProvider = (props: Props) => {
     setForeCastData(null);
   };
 
+  const getCapitalWeather = async () => {
+    setIsCapitalForecastDataLoading(true);
+    const capitalNames = [
+      "Rio de Janeiro",
+      "Salvador",
+      "São Paulo",
+      "Curitiba",
+      "Belo Horizonte",
+      "Fortaleza",
+      "Brasília",
+      "Manaus",
+      "Belém",
+      "Joao Pessoa",
+    ];
+    const promises = [];
+
+    for (const capital of capitalNames) {
+      promises.push(
+        fetch(
+          `https://api.weatherapi.com/v1/forecast.json?key=7b23400cf7984c81947145338230510&q=${capital}&days=1&lang=pt`
+        )
+      );
+    }
+
+    try {
+      const res = await Promise.all(promises);
+      const data = (await Promise.all(
+        res.map((r) => r.json())
+      )) as ApiDataType[];
+      setCapitalForeCastData(data.flat());
+      setIsCapitalForecastDataLoading(false);
+    } catch (e) {
+      console.log("Something wrong.");
+    }
+  };
+
   return (
     <WeatherContext.Provider
       value={{
-        getForecast,
-        foreCastData,
-        resetForecast,
-        isLoading,
+        getForecast: getForecast,
+        foreCastData: foreCastData,
+        resetForecast: resetForecast,
+        isForecastLoading: isForecastLoading,
+        capitalForecastData: capitalForecastData,
+        getCapitalWeather: getCapitalWeather,
+        isCapitalForecastDataLoading: isCapitalForecastDataLoading,
       }}
     >
       {props.children}
