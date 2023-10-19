@@ -1,0 +1,40 @@
+@import '../../../sass/abstracts/mixins';
+
+.weekly-weather {
+    width: 100%;
+    border-top: 3px solid var(--main-color);
+    grid-column: 1 / -1;
+    padding-top: 1.5rem;
+
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &__day {
+        text-align: center;
+
+        @include respond(phone) {
+            &:nth-child(5) {
+                display: none;
+            }
+        }
+
+        &-name {
+            font-size: 1.6rem;
+            color: var(--gray-dark-color-1);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        &-temperature {
+            color: var(--main-color);
+            font-size: 1.5rem;
+            font-weight: 700;
+
+            &> :first-child {
+                margin-right: 0.5rem;
+            }
+        }
+    }
+}
