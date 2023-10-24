@@ -1,5 +1,13 @@
+@import './sass/abstracts/mixins';
+
 .container {
     width: 100%;
     max-width: 50rem;
     margin: 0 auto;
+
+
+    @include respond(phone) {
+        max-width: 100%;
+    }
+
 }
