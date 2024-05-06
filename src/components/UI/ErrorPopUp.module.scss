@@ -1,0 +1,22 @@
+.error-popup {
+    background-color: var(--white-color);
+    width: 100%;
+    padding: 2rem;
+    text-align: center;
+
+    i {
+        font-size: 3rem;
+        color: var(--gray-dark-color-1);
+    }
+
+    h2 {
+        color: var(--gray-dark-color-1);
+        font-size: 3rem;
+    }
+
+    p {
+        margin-top: 0.8rem;
+        color: var(--grey-light-color);
+        font-size: 2rem;
+    }
+}
