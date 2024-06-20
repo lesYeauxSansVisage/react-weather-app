@@ -11,6 +11,7 @@ type WeatherContextTypes = {
   getCapitalWeather: () => void;
   capitalForecastData: ApiDataType[] | null;
   isCapitalForecastDataLoading: boolean;
+  foreCastDataHasErrors: boolean;
 };
 
 export const WeatherContext = React.createContext<WeatherContextTypes>({
@@ -22,6 +23,7 @@ export const WeatherContext = React.createContext<WeatherContextTypes>({
   getCapitalWeather: async () => {},
   capitalForecastData: [],
   isCapitalForecastDataLoading: false,
+  foreCastDataHasErrors: false,
 });
 
 export const WeatherContextProvider = (props: Props) => {
@@ -29,9 +31,12 @@ export const WeatherContextProvider = (props: Props) => {
   const [capitalForecastData, setCapitalForeCastData] = useState<
     ApiDataType[] | null
   >(null);
+
   const [isForecastLoading, setIsForecastLoading] = useState(false);
   const [isCapitalForecastDataLoading, setIsCapitalForecastDataLoading] =
     useState(false);
+
+  const [foreCastDataHasErrors, setForeCastDataHasErrors] = useState(false);
 
   const getForecast = async (city: string, days: number = 6) => {
     setIsForecastLoading(true);
@@ -41,15 +46,21 @@ export const WeatherContextProvider = (props: Props) => {
       );
 
       if (data.ok) {
+        setForeCastDataHasErrors(false);
         const res = await data.json();
         setForeCastData(res);
       } else {
-        throw new Error("Something has going wrong!");
+        setForeCastDataHasErrors(true);
+        throw new Error(
+          "Erro durante a busca. Há algum problema com os dados."
+        );
       }
 
       setIsForecastLoading(false);
     } catch (e) {
       console.log(e);
+      setIsForecastLoading(false);
+      setForeCastDataHasErrors(true);
     }
   };
 
@@ -103,6 +114,7 @@ export const WeatherContextProvider = (props: Props) => {
         capitalForecastData: capitalForecastData,
         getCapitalWeather: getCapitalWeather,
         isCapitalForecastDataLoading: isCapitalForecastDataLoading,
+        foreCastDataHasErrors: foreCastDataHasErrors,
       }}
     >
       {props.children}
