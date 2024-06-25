@@ -4,6 +4,7 @@ import { ApiDataType } from "../types/ApiDataType";
 type Props = React.PropsWithChildren;
 
 type WeatherContextTypes = {
+  // eslint-disable-next-line no-unused-vars
   getForecast: (city: string) => void;
   resetForecast: () => void;
   foreCastData: ApiDataType | null;
@@ -15,7 +16,7 @@ type WeatherContextTypes = {
 };
 
 export const WeatherContext = React.createContext<WeatherContextTypes>({
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
   getForecast: async (_city: string) => {},
   resetForecast: () => {},
   foreCastData: {} as ApiDataType,
@@ -48,6 +49,7 @@ export const WeatherContextProvider = (props: Props) => {
       if (data.ok) {
         setForeCastDataHasErrors(false);
         const res = await data.json();
+
         setForeCastData(res);
       } else {
         setForeCastDataHasErrors(true);
@@ -58,7 +60,6 @@ export const WeatherContextProvider = (props: Props) => {
 
       setIsForecastLoading(false);
     } catch (e) {
-      console.log(e);
       setIsForecastLoading(false);
       setForeCastDataHasErrors(true);
     }
@@ -100,7 +101,7 @@ export const WeatherContextProvider = (props: Props) => {
       setCapitalForeCastData(data.flat());
       setIsCapitalForecastDataLoading(false);
     } catch (e) {
-      console.log("Something wrong.");
+      throw new Error("Unable to get data");
     }
   };
 
