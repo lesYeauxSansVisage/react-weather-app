@@ -1,10 +1,11 @@
 import WeatherContext from "../../store/weather-context";
 import classes from "./WeatherForm.module.scss";
-import { useContext, useRef } from "react";
+import { useContext, useRef, useState } from "react";
 
 const WeatherForm = () => {
   const { getForecast } = useContext(WeatherContext);
   const cityRef = useRef<HTMLInputElement>(null);
+  const [error, setError] = useState(false);
 
   const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -12,7 +13,7 @@ const WeatherForm = () => {
     const cityInputValue = cityRef.current!.value;
 
     if (cityInputValue.trim() === "") {
-      console.log("Por favor, insira uma cidade");
+      setError(true);
       return;
     }
 
@@ -21,14 +22,33 @@ const WeatherForm = () => {
     event.currentTarget.reset();
   };
 
+  const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+
+    if (value.trim() === "") {
+      setError(true);
+    } else {
+      setError(false);
+    }
+  };
+
+  const formClasses = error
+    ? `${classes["weather-form"]} ${classes["error"]}`
+    : classes["weather-form"];
+
   return (
-    <form className={classes["weather-form"]} onSubmit={submitHandler}>
+    <form
+      className={formClasses}
+      onSubmit={submitHandler}
+      aria-label="city-search-form"
+    >
       <input
         type="text"
         placeholder="Insira aqui o nome da cidade"
+        onChange={changeHandler}
         ref={cityRef}
       />
-      <button type="submit">
+      <button type="submit" aria-label="search-submit-button">
         <i className="fa-solid fa-magnifying-glass"></i>
       </button>
     </form>
