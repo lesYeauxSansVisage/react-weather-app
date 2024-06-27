@@ -33,25 +33,28 @@ const CapitalWeathers = () => {
   });
 
   return (
-    <div className={classes["capital-weathers"]}>
-      <CapitalWeather
-        weather={{
-          max: "Max",
-          min: "Min",
-        }}
-      />
+    <section className={classes["capital-weathers-section"]}>
+      <h2 className={classes["capital-weathers-section__title"]}>Capitais</h2>
+      <div className={classes["capital-weathers"]}>
+        <CapitalWeather
+          weather={{
+            max: "Max",
+            min: "Min",
+          }}
+        />
 
-      <CapitalWeather
-        weather={{
-          max: "Max",
-          min: "Min",
-        }}
-      />
+        <CapitalWeather
+          weather={{
+            max: "Max",
+            min: "Min",
+          }}
+        />
 
-      {mappedWeathers.map((weather, index) => (
-        <CapitalWeather weather={weather} key={index} />
-      ))}
-    </div>
+        {mappedWeathers.map((weather, index) => (
+          <CapitalWeather weather={weather} key={index} />
+        ))}
+      </div>
+    </section>
   );
 };
 
