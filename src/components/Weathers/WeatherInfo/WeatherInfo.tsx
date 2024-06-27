@@ -3,10 +3,15 @@ import classes from "./WeatherInfo.module.scss";
 import WeeklyWeathers from "./WeeklyWeathers";
 import WeatherContext from "../../../store/weather-context";
 import LoadingSpinner from "../../UI/LoadingSpinner";
+import ErrorPopUp from "../../UI/ErrorPopUp";
 
 const WeatherInfo = () => {
-  const { foreCastData, resetForecast, isForecastLoading } =
-    useContext(WeatherContext);
+  const {
+    foreCastData,
+    resetForecast,
+    isForecastLoading,
+    foreCastDataHasErrors,
+  } = useContext(WeatherContext);
 
   const closeHandler = () => {
     resetForecast();
@@ -16,12 +21,16 @@ const WeatherInfo = () => {
     return <LoadingSpinner />;
   }
 
+  if (foreCastDataHasErrors) {
+    return <ErrorPopUp />;
+  }
+
   if (!foreCastData) {
     return;
   }
 
   return (
-    <div className={classes["weather-info"]}>
+    <div className={classes["weather-info"]} aria-label="weather-info">
       <span className={classes["weather-info__city"]}>
         {foreCastData!.location.name}, {foreCastData!.location.region} -{" "}
         {foreCastData!.location.country}
