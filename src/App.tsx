@@ -4,6 +4,7 @@ import MainHeader from "./components/UI/MainHeader";
 import WeatherForm from "./components/Weathers/WeatherForm";
 import WeatherInfo from "./components/Weathers/WeatherInfo/WeatherInfo";
 import { WeatherContextProvider } from "./store/weather-context";
+import SeparatorLine from "./components/UI/SeparatorLine";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <MainHeader />
         <WeatherInfo />
         <WeatherForm />
+        <SeparatorLine />
         <CapitalWeathers />
       </WeatherContextProvider>
     </div>
