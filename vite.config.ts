@@ -12,5 +12,5 @@ export default defineConfig({
   //     },
   //   },
   // },
-  base: "/weather-app/",
+  base: "/weatherapp/",
 });
