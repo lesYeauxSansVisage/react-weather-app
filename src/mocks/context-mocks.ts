@@ -1,4 +1,4 @@
-import { ApiDataType } from "../src/types/ApiDataType";
+import type { ApiDataType } from "../types/ApiDataType";
 
 export const valueWithError = {
   getForecast: () => {},

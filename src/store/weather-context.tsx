@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ApiDataType } from "../types/ApiDataType";
+import type { ApiDataType } from "../types/ApiDataType";
 
 type Props = React.PropsWithChildren;
 
